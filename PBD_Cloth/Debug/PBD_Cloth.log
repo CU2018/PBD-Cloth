@@ -1,0 +1,11 @@
+﻿  Cloth.cpp
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\shader.h(56): warning C4101: 'e': unreferenced local variable
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(137): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(146): warning C4305: 'argument': truncation from 'double' to 'T'
+          with
+          [
+              T=float
+          ]
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(162): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(199): warning C4018: '<': signed/unsigned mismatch
+  PBD_Cloth.vcxproj -> C:\Users\Administrator\Desktop\Simulation RD\2_PBD\PBD_Cloth\Debug\PBD_Cloth.exe
