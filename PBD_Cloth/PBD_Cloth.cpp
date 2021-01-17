@@ -18,6 +18,8 @@ int maxSubstep = 10;
 float FPS = 24.0f;
 float timeStep = 1.0f / (FPS*maxSubstep); //1.0/240f;
 int solverIteration = 10;
+float dampingRate = 0.9f;
+float frictionCoef = 0.16f;
 
 // OpenGL functions
 // void copyVertices(Cloth& newCloth);
@@ -35,14 +37,15 @@ void renderSphere(unsigned int VAO_2);
 #define SPHERE_VEC 3888
 void drawSphere();
 float sphereVertices[SPHERE_VEC * 3];
-Vec3f spherePos(1.0f, 1.0f, -5.0f);
+Vec3f spherePos(0.0f, 0.0f, 0.0f);
+float sphereRadius = 5.0f;
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 40.0f);
+glm::vec3 cameraPos = glm::vec3(20.0f, 0.0f, -30.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -59,11 +62,9 @@ float lastFrame = 0.0f;
 
 // cloth
 int resX = 51, resY = 51;
-float sizeX = 0.45, sizeY = 0.45;
-const long int CLOTH_VERTICES = 1458;  // (resX-1)*(resY-1)*2*3 60000 (101)   486 (10)
+float sizeX = 0.45, sizeY = 0.6;
 const float DIST_K_STIFF = 1;   // stiffness of the distance constraint
 bool hasPosConstraint = true;  // true: fix the top left and right points; false: don't fix
-// float clothVertices[CLOTH_VERTICES + SPHERE_VEC*3];
 float angle = -90.0f;
 
 int main()
@@ -112,9 +113,10 @@ int main()
 	Shader myShader("shader.vs", "shader.fs");
 
 	// create cloth obj
-	Cloth newCloth(resX, resY, sizeX, sizeY, DIST_K_STIFF, hasPosConstraint);
+	Vec3f clothPos(-10.0f, 10.0f, -20.0f);  // tranlate to the center
+	Cloth newCloth(resX, resY, sizeX, sizeY, DIST_K_STIFF, hasPosConstraint, clothPos);
 	// printf("new cloth: %d, %d, %f, %f", resX, resY, sizeX, sizeY);
-	Vec3f clothPos(0-(resX - 1)*sizeX / 2, 0-((resY - 1)*sizeY / 2 - 5.0f), 0.0f);  // tranlate to the center
+	
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// --------------------------
@@ -129,20 +131,10 @@ int main()
 
 	// cloth settings
 	setCloth(newCloth, VAO_1, VBO_1, EBO);
-	/*glBindVertexArray(VAO_1);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_1);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(newCloth.points[0])*newCloth.points.size(), &newCloth.points[0], GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(newCloth.indexArray[0])*newCloth.indexArray.size(), &newCloth.indexArray[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(newCloth.points[0]), (void*)0);*/
 	glEnableVertexAttribArray(0);
 
 	//// sphere settings
 	setSphere(VAO_2);
-	//glBindVertexArray(VAO_2);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SPHERE_VEC * 3, sphereVertices, GL_STATIC_DRAW);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(0);
 
 	//// tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
@@ -169,7 +161,7 @@ int main()
 				lastFrame = currentFrame;
 
 				// update cloth state; Physics simulation using fixed deltatime
-				newCloth.update(timeStep, hasPosConstraint, solverIteration);
+				newCloth.update(timeStep, dampingRate, hasPosConstraint, solverIteration, spherePos, sphereRadius);
 				// input
 				// -----
 				processInput(window);
@@ -187,37 +179,24 @@ int main()
 				myShader.setMat4("projection", projection);
 
 				// camera/view transformation
-				glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+				glm::mat4 view = glm::lookAt(cameraPos,
+								glm::vec3(0.0f, 0.0f, 0.0f),
+								cameraUp);
 				myShader.setMat4("view", view);
 
 				// model transformation
 				glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-				//model = glm::rotate(model, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
-				//model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f));
-				model = glm::translate(model, glm::vec3(clothPos[0], clothPos[1], clothPos[2]));
 				myShader.setMat4("model", model);
 
 				// render cloth
 				renderCloth(newCloth, VAO_1, VBO_1, EBO);
-				//glBindVertexArray(VAO_1);
-				//glBindBuffer(GL_ARRAY_BUFFER, VBO_1);
-				//glBufferData(GL_ARRAY_BUFFER, sizeof(newCloth.points[0])*newCloth.points.size(), &newCloth.points[0], GL_STATIC_DRAW);
-				//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-				//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(newCloth.indexArray[0])*newCloth.indexArray.size(), &newCloth.indexArray[0], GL_STATIC_DRAW);
-				//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(newCloth.points[0]), (void*)0);
-				//glDrawElements(GL_TRIANGLES, newCloth.indexArray.size(), GL_UNSIGNED_INT, 0);
 
 				// render sphere
-				glm::mat4 model1 = glm::mat4(1.0f);
-				// model1 = glm::translate(model, glm::vec3(spherePos[0], spherePos[1], spherePos[2]));
-				myShader.setMat4("model", model1);
+				glm::mat4 model_s = glm::mat4(1.0f);
+				model_s = glm::scale(model_s, glm::vec3(5.0f, 5.0f, 5.0f));
+				model_s = glm::translate(model_s, glm::vec3(spherePos[0], spherePos[1], spherePos[2]));
+				myShader.setMat4("model", model_s);
 				renderSphere(VAO_2);
-				//glBindBuffer(GL_ARRAY_BUFFER, VBO_2);
-				//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * SPHERE_VEC * 3, sphereVertices, GL_STATIC_DRAW);
-				//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-				//glBindVertexArray(VAO_2);
-				//glDrawArrays(GL_TRIANGLES, 0, SPHERE_VEC * 3);
-				
 
 				// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 				// -------------------------------------------------------------------------------
@@ -225,10 +204,10 @@ int main()
 				glfwPollEvents();
 			}
 			// save each frame as a targa file
-			/*std::string fileName = std::to_string(frameNum) + "_frame.tga";
+			std::string fileName = std::to_string(frameNum) + "_frame.tga";
 			const char * c = fileName.c_str();
 			if(gltWriteTGA(c))
-				printf("saving %d sucess!\n", frameNum);*/
+				printf("saving %d sucess!\n", frameNum);
 		}
 	//}
 

@@ -1,11 +1,20 @@
 ﻿  Cloth.cpp
 c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\shader.h(56): warning C4101: 'e': unreferenced local variable
-c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(137): warning C4018: '<': signed/unsigned mismatch
-c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(146): warning C4305: 'argument': truncation from 'double' to 'T'
-          with
-          [
-              T=float
-          ]
-c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(162): warning C4018: '<': signed/unsigned mismatch
-c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(199): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(136): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(158): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(191): warning C4018: '<': signed/unsigned mismatch
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\cloth.cpp(206): warning C4018: '<': signed/unsigned mismatch
+  PBD_Cloth.cpp
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\shader.h(56): warning C4101: 'e': unreferenced local variable
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(64): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(168): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(259): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(287): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(288): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(292): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(293): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(294): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(295): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\administrator\desktop\simulation rd\2_pbd\pbd_cloth\pbd_cloth\pbd_cloth.cpp(332): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating Code...
   PBD_Cloth.vcxproj -> C:\Users\Administrator\Desktop\Simulation RD\2_PBD\PBD_Cloth\Debug\PBD_Cloth.exe
