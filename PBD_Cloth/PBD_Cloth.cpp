@@ -19,7 +19,6 @@ float FPS = 24.0f;
 float timeStep = 1.0f / (FPS*maxSubstep); //1.0/240f;
 int solverIteration = 10;
 float dampingRate = 0.9f;
-float frictionCoef = 0.16f;
 
 // OpenGL functions
 // void copyVertices(Cloth& newCloth);

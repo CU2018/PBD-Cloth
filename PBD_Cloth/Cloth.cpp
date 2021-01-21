@@ -55,7 +55,7 @@ void Cloth::createCloth(int resX, int resY, float sizeX, float sizeY, bool hasPo
 		{
 			Vec3f newPos = Vec3f((float)i*sizeX, 0.0f, (float)j*sizeY);
 			newPos += initPos;
-			float newMass = 0.01f;
+			float newMass = 0.5f;
 
 			// initialize point constraint
 			Point newP;
